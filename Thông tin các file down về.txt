@@ -1,0 +1,14 @@
+link: <!-- Search 'todo css template' (link: https://github.com/Klerith/TODO-CSS-Template) -->
+
+file base.css (trong css folder): 
+	- Dường dẫn trong github: TODO-CSS-Template/node_modules/todomvc-common/base.css
+
+
+file style.css (trong css folder): 
+	- Dường dẫn trong github: TODO-CSS-Template/node_modules/todomvc-app-css/index.css
+
+
+file tmp.html
+	- Dường dẫn trong github: TODO-CSS-Template/index.html
+
+
