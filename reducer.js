@@ -2,7 +2,16 @@
 
 // Tạo 1 giá trị khởi tạo
 const init = {
-    
+    todos: [
+        {
+            title: 'Learn Javascript',
+            completed: false
+        },
+        {
+            title: 'Learn Python',
+            completed: true
+        }
+    ]
 }
 
 

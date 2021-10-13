@@ -1,0 +1,1 @@
+// File này có tác dụng để ghi log, ví dụ như trạng thái trước khi dispatch và sau khi dispatch của việt thêm item khi user nhập vào input và nhấn Enter thì 'onkeyup' sẽ bắt dc event dispatch action của User, file logger này sẽ cho ta thấy trang thái trước và sau khi action dc dispatch
