@@ -8,7 +8,8 @@ import { connect } from '../store.js'
 
 // TodoList component là component main cùa ta
 // Vì 'filters' mình viết trong Store (reduce.js) nên mình nhận dc 'filters' ở TodoList
-function TodoList({ todos, filters }) {
+// Thêm đối số 'filter' để ta render dữ liệu (các todo item trong List) theo loại filter dc chọn
+function TodoList({ todos, filter, filters }) {
     // console.log(filters)
 
     // console ra sẽ thấy props nhận dc init của mình ({todos: Array(2)}), ta dùng destructering để nhận thẳng todos vào 
@@ -42,6 +43,9 @@ function TodoList({ todos, filters }) {
                 Action Arguments: [false] (input (dấu mũi tên xuống) đang dc User check vào)
                 Next State: {todos: Array(2)}
      */
+
+
+    // Vì value của 'filter' nó trùng với các key của 'filters' (có thể là all hoặc active hoặc completed) nên ta dùng value của 'filter' để lấy ra các function tương ứng của các key trong 'filters' bằng các truyền filter vào filters (filters[filter]), đó cũng là điều kiện trong filter() để ta lọc và render ra các item theo loại filter dc chọn
     return html`
         <section class="main">
             <input 
@@ -53,7 +57,7 @@ function TodoList({ todos, filters }) {
             >
             <label for="toggle-all">Mark all as complete</label>
             <ul class="todo-list">
-                ${todos.map((todo, index) => TodoItem({ todo, index }))}
+                ${todos.filter(filters[filter]).map((todo, index) => TodoItem({ todo, index }))}
             </ul>
         </section>
     `

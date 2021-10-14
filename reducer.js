@@ -72,7 +72,36 @@ const actions = {
         // Xóa đi 1 item
         todos.splice(index, 1)
         storage.set(todos)
-    }
+    },
+    // action 'switchFilter'
+    // Trong action này ta ko nhận todos nữa mà nhận state, vì state mới chọc vào dc filter của init, đối số thứ 2 là filter (filter mới)
+
+    // Khi ta click vào bộ lọc có tên 'Active' trên UI thì logger sẽ ghi lại như sau:
+    /**
+     * switchFilter (là action name 'switchFilter')
+            Prev State: {todos: Array(2), filter: "all"} (vì giá trị mặc định ban đầu của filter là 'all')
+            Action Arguments: ["active"] (tên filter sau khi ta chuyển từ filter mặc định sang filter mới )
+            Next State: {todos: Array(2), filter: "active"}
+     */
+    // Khi ta click filter 'Completed' trên UI thì logger sẽ ghi lại như sau:
+    /**
+     * switchFilter (là action name 'switchFilter')
+            Prev State: {todos: Array(2), filter: "active"} (là tên filter trước đó)
+            Action Arguments: ["completed"] (tên filter sau khi ta chuyển từ filter trước đó sang filter mới )
+            Next State: {todos: Array(2), filter: "completed"}
+     */
+    switchFilter(state, filter) {
+        state.filter = filter
+    },
+    // action 'clearCompleted'
+    // ta cần đối số là state vì ta dùng state để gán lại todos và lọc theo điều kiện xóa bỏ tất cả todo item đã complete
+    clearCompleted(state) {
+        state.todos = state.todos.filter(state.filters.active)
+        // lưu lại state.todos và storage
+        storage.set(state.todos)
+
+    },
+
 }
 
 // Mặc định cho state = init
