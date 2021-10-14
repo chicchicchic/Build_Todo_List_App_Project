@@ -67,6 +67,12 @@ const actions = {
         todos.forEach(todo => todo.completed = completed);
         storage.set(todos)
     },
+    // action 'destroy'
+    destroy({ todos }, index) {
+        // Xóa đi 1 item
+        todos.splice(index, 1)
+        storage.set(todos)
+    }
 }
 
 // Mặc định cho state = init

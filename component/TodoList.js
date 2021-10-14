@@ -5,11 +5,12 @@ import TodoItem from '../component/TodoItem.js'
 import { connect } from '../store.js'
 
 
-const connector = connect()
-
 
 // TodoList component là component main cùa ta
-function TodoList({ todos }) {
+// Vì 'filters' mình viết trong Store (reduce.js) nên mình nhận dc 'filters' ở TodoList
+function TodoList({ todos, filters }) {
+    // console.log(filters)
+
     // console ra sẽ thấy props nhận dc init của mình ({todos: Array(2)}), ta dùng destructering để nhận thẳng todos vào 
     // console.log(props);
 
@@ -25,9 +26,31 @@ function TodoList({ todos }) {
                 Action Arguments: [true] (input (dấu mũi tên xuống) đang dc User check vào)
                 Next State: {todos: Array(2)}
      */
+
+    // Check tất cả todo dc check thì thêm attribute 'checked', thì sau khi tất cả item dc User check hoặc ta click vào mũi tên xuống thì input (dấu mũi tên xuống) cũng dc thêm attribute 'checked' nên nó sáng lên, và ngược lại ta nhấn vào mũi tên xuống 1 lần nữa thì nó bỏ check tất cả và mũi tên xuống ko còn sáng nữa 
+    // Khi ta click vào dấu mũi tên xuống hoặc check tất cả item (check từng cái) thì logger sẽ ghi lại như sau: (lưu ý: tất cả item dc check thì dấu mũi tên xuống mới sáng lên)
+    /**
+     * toggleAll (là action name 'toggleAll')
+                Prev State: {todos: Array(2)}
+                Action Arguments: [true] (input (dấu mũi tên xuống) đang dc User check vào)
+                Next State: {todos: Array(2)}
+     */
+    // Khi ta click vào dấu mũi tên xuống 1 lần nữa hoặc bỏ check một/một vài item (check từng cái) thì logger sẽ ghi lại như sau:
+    /**
+     * toggleAll (là action name 'toggleAll')
+                Prev State: {todos: Array(2)}
+                Action Arguments: [false] (input (dấu mũi tên xuống) đang dc User check vào)
+                Next State: {todos: Array(2)}
+     */
     return html`
         <section class="main">
-            <input id="toggle-all" class="toggle-all" type="checkbox" onchange="dispatch('toggleAll', this.checked)">
+            <input 
+                id="toggle-all" 
+                class="toggle-all" 
+                type="checkbox" 
+                onchange="dispatch('toggleAll', this.checked)"
+                ${todos.every(filters.completed) && 'checked'}
+            >
             <label for="toggle-all">Mark all as complete</label>
             <ul class="todo-list">
                 ${todos.map((todo, index) => TodoItem({ todo, index }))}
