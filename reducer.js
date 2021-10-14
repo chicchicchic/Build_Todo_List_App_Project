@@ -1,17 +1,38 @@
-//  Ví dụ ứng dụng quản lý ô tô
+// import localstorage
+import storage from './util/storage.js'
+
+
+//  Ví dụ ứng dụng todo List
 
 // Tạo 1 giá trị khởi tạo
 const init = {
-    todos: [
-        {
-            title: 'Learn Javascript',
-            completed: false
-        },
-        {
-            title: 'Learn Python',
-            completed: true
-        }
-    ]
+    // init ban đầu
+    // todos: [
+    //     {
+    //         title: 'Learn Javascript',
+    //         completed: false
+    //     },
+    //     {
+    //         title: 'Learn Python',
+    //         completed: true
+    //     }
+    // ]
+
+    // Lấy ra từ storage
+    todos: storage.get(),
+    // bộ lọc filter mặc định là tất cả (all)
+    filter: 'all',
+    // và filters chứa các điều kiện để lọc
+    filters: {
+        // ta có key 'all', khi có điều kiện lọc tất cả thì đơn giản là ta trả nó về true (mặc định là all)
+        all: () => true,
+        // khi ở trang thái 'active' thì nó nhận 'todo' và nó chỉ hiện thị ra item nào mà chưa complete (chưa hoàn thành)
+        active: todo => !todo.completed,
+        // ngược với trạng thái lọc 'active'
+        completed: todo => todo.completed,
+        
+    }
+
 }
 
 
@@ -20,12 +41,32 @@ const actions = {
     // action 'add' nhận state và title 'add(state, title)'
     // Bởi vì Object trong JS có tính chất tham chiếu (reference) nên ko nhất thiết để trả ra state mới nên ta chỉ cần destructering nhận luôn todos vào 'add({ todos }, title)'
     add({ todos }, title) {
-        // Viết logic của add
-
-        // push thăng Object mới vào todos luôn
-        // Sau khi đoạn 'actions[action] && actions[action](state, ...args)' dc thực thi thì nó push object mới vào totos 'todos.push({ title, completed: false })' và return lại state 'return state'
-        todos.push({ title, completed: false })
-    }
+        // Check nếu có title (thông tin todo User nhập vào), nếu User ko nhập gì vào mà chỉ focus chuột vào ô input và Enter thì action vẫn chạy, tuy nhiên theo dõi bên log thì Action Arguments là rỗng và Next State ko tăng lên vì nó ko có thực hiện thêm vào khi User ko nhập gì mà Enter
+        if(title) {
+            // push thăng Object mới vào todos luôn
+            // Sau khi đoạn 'actions[action] && actions[action](state, ...args)' dc thực thi thì nó push object mới vào totos 'todos.push({ title, completed: false })' và return lại state 'return state'
+            todos.push({ title, completed: false })
+    
+            // Add vào storage, và truyền todos vào để nó lưu lại
+            storage.set(todos)
+        }
+    },
+    // action 'toggle' 
+    // Đố số thứ nhất là 'todos', đối số thứ 2 là 'index' của mỗi item
+    toggle({ todos }, index) {
+        const todo = todos[index];
+        // Đảo ngược chính nó, khi User check vào thì item dc gạch, còn khi User nhấn lại 1 cái thì item ko còn gạch nữa, và những thao tác này dc local storage lưu lại hết
+        todo.completed = !todo.completed
+        // lưu vào storage
+        storage.set(todos)
+    },
+    // action 'toggleAll'
+    // Đố số thứ nhất là 'todos', đối số thứ 2 là 'completed' của input (dấu mũi tên xuống)
+    toggleAll({ todos }, completed) {
+        // lặp qua todos, completed là trạng thái check bên ngoài truyền vào, bên ngoài truyền vào cái gì thì nó truyền hết cho item trong list
+        todos.forEach(todo => todo.completed = completed);
+        storage.set(todos)
+    },
 }
 
 // Mặc định cho state = init

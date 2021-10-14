@@ -52,13 +52,13 @@ export function createStore(reducer) {
                 component(Object.assign({}, props, selector(state), ...args)) 
         },
         // Sau này View nó muốn thực hiện hành động gì đó thì nó phải dispatch, nên ta tạo thêm 1 func dispatch
-        // dispatch nó thực hiện hành động gì đó nên nó sẽ nhận 1 mô tả action và đẫy sang cho reducer và nó có thẻ đi kèm những dữ liệu (Vd: thêm thì nó sẽ đẩy những dự liệu cần thêm, xóa thí nó đẩy index hay những gì cần xóa...) nên ta nhận tất cả agrs của nó (...agrs)
-        dispatch(action, ...agrs) {
+        // dispatch nó thực hiện hành động gì đó nên nó sẽ nhận 1 mô tả action và đẫy sang cho reducer và nó có thẻ đi kèm những dữ liệu (Vd: thêm thì nó sẽ đẩy những dự liệu cần thêm, xóa thí nó đẩy index hay những gì cần xóa...) nên ta nhận tất cả args của nó (...args)
+        dispatch(action, ...args) {
             // Khi dispatch dc thực thi thì gọi reducer
-            // Bản chất reduce là nhận giá trị lần trước đã return , và sau đó nhận action, vả cuối cùng là truyền 'agrs' vào
+            // Bản chất reduce là nhận giá trị lần trước đã return , và sau đó nhận action, vả cuối cùng là truyền 'args' vào
             // Ban đầu state của mình sẽ là 'let state = reducer()', sau đó mình dispatch 1 action gì đó thì truyền action, sau đó reducer dựa vào action đi sửa state của mình và return lại 1 state mới thì khi đó Store dc update lại, khi Store update lại thì View mình sẽ thay đổi nên ta gọi hàm render()
-            // reducer ở đầy nó sẽ nhận state cũ 'state' và nó chỉnh sửa 'action' (kèm data đi kèm khi chỉnh sửa 'agrs') và gán nó = state mới 'state' và render ra ngoài
-            state = reducer(state, action, agrs)
+            // reducer ở đầy nó sẽ nhận state cũ 'state' và nó chỉnh sửa 'action' (kèm data đi kèm khi chỉnh sửa 'args') và gán nó = state mới 'state' và render ra ngoài
+            state = reducer(state, action, args)
             render()
         }
 
