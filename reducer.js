@@ -29,9 +29,10 @@ const init = {
         // khi ở trang thái 'active' thì nó nhận 'todo' và nó chỉ hiện thị ra item nào mà chưa complete (chưa hoàn thành)
         active: todo => !todo.completed,
         // ngược với trạng thái lọc 'active'
-        completed: todo => todo.completed,
-        
-    }
+        completed: todo => todo.completed,   
+    },
+    // Edit index (mặc định null)
+    editIndex: null,
 
 }
 
@@ -99,8 +100,25 @@ const actions = {
         state.todos = state.todos.filter(state.filters.active)
         // lưu lại state.todos và storage
         storage.set(state.todos)
-
     },
+    // action 'startEdit'
+    // Ban đầu logger sẽ ghi là:
+    /**
+     * undefined (là action name 'undefined')
+            Prev State: undefined
+            Action Arguments: undefined
+            Next State: {todos: Array(2), editIndex: null}
+     */
+    // Sau khi nhấn đúp vào 1 item (Vd item thứ 3 trong List)
+    /**
+     * editStart (là action name 'editStart')
+            Prev State: {todos: Array(2), editIndex: null}
+            Action Arguments: [2]
+            Next State: {todos: Array(2), editIndex: 2}
+     */
+    startEdit(state, index) {
+        state.editIndex = index
+    }
 
 }
 

@@ -1,4 +1,6 @@
 import html from '../core.js'
+// import connect
+import { connect } from '../store.js'
 
 
 // TodoList component là component main cùa ta
@@ -6,7 +8,8 @@ import html from '../core.js'
 
 // Dùng destructoring để nhận todo từ TodoList.js
 // nhận thêm index sau khi thêm 'index' vào TodoList.js
-function TodoItem({ todo, index }) {
+// nhận thêm editIndex sau khi thêm 'editIndex' vào TodoList.js
+function TodoItem({ todo, index, editIndex }) {
     // console.log(todo);
 
     // '<li class="${todo.completed && 'completed'}">' nghĩa là ở todo ta nhận dc thì nó 1 2 key, thứ nhất là title, thứ hai là completed (dạng boolearn true/false). Nếu completed=true thì nó thêm class 'completed' vào (item dc thêm class 'completed' sẽ nhạt màu và có gạch chéo đánh dấu đã hoàn thành), còn nếu completed=false thì nó ko dc thêm class completed vào (item ko dc thêm 'completed' sẽ sáng màu nghỉa là item chưa hoàn thành)
@@ -35,11 +38,16 @@ function TodoItem({ todo, index }) {
             Action Arguments: [2] (là index tại item mà ta click dấu xóa, phần tử thứ 3 trong List thì index là 2)
             Next State: {todos: Array(4)}
      */
+
+
+    // Ta bắt event click đúp vào item thì nó sẽ cho ta chỉnh sửa thông tin item
+
+    // Ta check nếu editIndex = index thì add class 'editing' vào
     return html`
-        <li class="${todo.completed && 'completed'}">
+        <li class="${todo.completed && 'completed'} ${editIndex === index && 'editing'}">
             <div class="view">
                 <input class="toggle" type="checkbox" ${todo.completed && 'checked'} onchange="dispatch('toggle', ${index})">
-                <label>${todo.title}</label>
+                <label ondblclick="dispatch('startEdit', ${index})">${todo.title}</label>
                 <button class="destroy" onclick="dispatch('destroy', ${index})"></button>
             </div>
             <input class="edit" value="${todo.title}">
@@ -49,4 +57,4 @@ function TodoItem({ todo, index }) {
 
 
 
-export default TodoItem
+export default connect()(TodoItem)
