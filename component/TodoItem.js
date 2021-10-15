@@ -43,6 +43,8 @@ function TodoItem({ todo, index, editIndex }) {
     // Ta bắt event click đúp vào item thì nó sẽ cho ta chỉnh sửa thông tin item
 
     // Ta check nếu editIndex = index thì add class 'editing' vào
+    // Ta check nếu User nhập thông tin todo Item rồi mà nhấn Enter hoặc blur ra ngoài thì nó phải lưu thông tin đó lại. Check event nhấn Enter ở <input> có class 'edit', nếu keyCode = 13 thì ta dispatch 1 action 'endEdit' và đẩy value vào sau đó .trim() để loại bỏ khoảng trống 2 bên đầu. Check event User chỉnh sửa thông tin todo item và blur ra ngoài thì vẫn lưu giá trị mới của item vừa dc sửa, bắt sự kiện ở <input> có class 'edit'
+    // Nếu User sau khi đúp click vào và nó hiện cho phép User chình sửa mà nếu User muốn thoát chế độ edit thì ta bắt thêm event User nhấn phím 'esc' sẽ thoát chế độ edit item cho User
     return html`
         <li class="${todo.completed && 'completed'} ${editIndex === index && 'editing'}">
             <div class="view">
@@ -50,7 +52,7 @@ function TodoItem({ todo, index, editIndex }) {
                 <label ondblclick="dispatch('startEdit', ${index})">${todo.title}</label>
                 <button class="destroy" onclick="dispatch('destroy', ${index})"></button>
             </div>
-            <input class="edit" value="${todo.title}">
+            <input class="edit" value="${todo.title}" onkeyup="event.keyCode === 13 && dispatch('endEdit', this.value.trim()) || event.keyCode === 27 && dispatch('cancelEdit')" onblur="dispatch('endEdit', this.value.trim())">
         </li>
     `
 }

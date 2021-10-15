@@ -118,6 +118,28 @@ const actions = {
      */
     startEdit(state, index) {
         state.editIndex = index
+    },
+    // action 'endEdit'
+    endEdit(state, title) {
+        // Check nếu có editIndex ko = null (vì ban đầu ta đặt nó = null) thì mới thực hiện việc gán title của chính index dc edit = với title (nội dung todo item)
+        if (state.editIndex !== null) {
+            // Check nếu mà có title (tránh trường hợp User edit giá trị ban đầu thành chuỗi rỗng và nhấn Enter hoặc blur để lưu) thì mới thực hiện việc edit thông tin todo item
+            if (title) {
+                state.todos[state.editIndex].title = title
+                storage.set(state.todos)
+            }
+            // Nếu User nhấn đúp vào và edit thành chuỗi rỗng thì xóa bỏ luôn item đó nếu nhấn Enter hoặc blur ra ngoài
+            else {
+                this.destroy(state, state.editIndex)
+            }
+            // và bỏ chế độ cho phép User edit 
+            state.editIndex = null
+        }
+    },
+    // action 'cancelEdit'
+    // Khi User nhấn đúp và edit (hoặc ko edit) nếu User ko nhấn Enter hoặc blur ra ngoài mà nhấn phím 'esc' thì nó sẽ thoát trạng thái cho User chỉnh sửa và giá trị mà User chỉnh sửa sẽ trở về giá trị ban đầu
+    cancelEdit(state) {
+        state.editIndex = null
     }
 
 }
