@@ -130,6 +130,7 @@ const actions = {
             }
             // Nếu User nhấn đúp vào và edit thành chuỗi rỗng thì xóa bỏ luôn item đó nếu nhấn Enter hoặc blur ra ngoài
             else {
+                // gọi action 'destroy' để xóa luôn item nếu User nhấn đúp chỉnh sửa mà sửa thành chuỗi rỗng
                 this.destroy(state, state.editIndex)
             }
             // và bỏ chế độ cho phép User edit 
